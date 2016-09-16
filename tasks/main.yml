@@ -1,0 +1,13 @@
+---
+- name: Install Gemini via Mac App Store
+  command: mas install "{{ item.id }}"
+  args:
+    creates: /Applications/{{ item.name }}.app
+  with_items:
+    - { id: 463541543, name: "Gemini" }
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == true
+
+- name: Install Gemini via Homebrew
+  homebrew_cask:
+    name: gemini
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == false
